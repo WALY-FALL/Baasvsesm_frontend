@@ -1,0 +1,107 @@
+body{
+    margin: 0px;
+    padding: 0px;
+}
+.container-entete{
+    height: 50px;
+    /*background: linear-gradient(to right,  #6dd5ed, #2193b0);*/
+    background: #2193b0;
+    margin: 0px;
+    padding: 0px;
+}
+
+.container-navbar{
+    height: 100px;
+    display: flex;
+    align-items: center;
+    border-bottom: solid;
+    border-bottom-width:1px ;
+   
+}
+
+.container-logo{
+    width: 20%;
+    font-size: x-large;
+    margin-left:10px;
+}
+
+.vide{
+    width: 50%;
+}
+
+.navbar{
+    width: 30%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    list-style-type: none;
+   
+}
+.li-link{
+    text-decoration: none;
+    font-size: larger;
+}
+
+.div-home{
+    height: 500px;
+    background: linear-gradient(to left, #2193b0, #6dd5ed);
+}
+.signup{
+    display: flex;
+    justify-content: center;
+}
+
+.formulaire{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    width: 30%;
+    border: solid;
+    border-width: 1px;
+    border-radius: 30px;
+    margin-top: 10px;
+  
+    
+}
+
+.input{
+    height: 50px;
+    width: 85%;
+    border: none;
+    border-bottom: solid
+}
+
+.button{
+    width: 50%;
+    height: 50px;
+    background:#6dd5ed;
+    border-radius: 10px;
+    border: none;
+    font-size:medium;
+
+}
+
+.container-espaceprofs{
+    display: flex;
+}
+
+.menu-vertical{
+    width: 15%;
+    border-right: solid;
+    border-width: 1px;
+}
+
+.container-classes{
+    width: 85%;
+    height: 500px;
+  
+}
+
+.navbar-classes{
+    height: 80px;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    display: flex;
+    justify-content: space-around;
+}
