@@ -3,9 +3,9 @@ import axios from "axios";
 
 
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+const API_URL_CLASSE = process.env.REACT_APP_API_URL_CLASSE || "http://localhost:5000/api";
 
-const Classe=({ onClassCreated })=>{
+const FormulaireClasse=({ onClassCreated })=>{
 
      //definition initialisation des etats
   const [serie, setSerie] = useState("");
@@ -13,25 +13,28 @@ const Classe=({ onClassCreated })=>{
   const [description, setDescription] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleSubmit = async (e) => { //e represente l'evenement (event) declanché.
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    try { 
-
-      await axios.post(`${API_URL}/classe/create`, {
-        serie,
-        niveau,
-        description,
-      });
-
-      // 👉 Fermer le formulaire
-      if (onClassCreated) onClassCreated();
   
+    try {
+      const token = localStorage.getItem("token"); // ⚡ récupère le JWT du prof connecté
+     
+      await axios.post(
+        `${API_URL_CLASSE}/create`,
+        { serie, niveau, description },
+        {
+          headers: { Authorization: `Bearer ${token}` } // ⚡ envoie du token
+        }
+      );
+  
+      // Fermer le formulaire
+      if (onClassCreated) onClassCreated();
     } catch (err) {
       console.error("Erreur:", err.response ? err.response.data : err.message);
-      setMessage("Erreur lors de la crèation de la classe");
+      setMessage("Erreur lors de la création de la classe");
     }
   };
+  
 
     return(
     
@@ -43,7 +46,6 @@ const Classe=({ onClassCreated })=>{
           placeholder="Série"
           value={serie}
           onChange={(e) => setSerie(e.target.value)}
-          required
         />
         <input
           type="text"
@@ -68,5 +70,5 @@ const Classe=({ onClassCreated })=>{
     );
 }
 
-export default Classe;
+export default FormulaireClasse;
 

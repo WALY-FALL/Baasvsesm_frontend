@@ -105,3 +105,70 @@ body{
     display: flex;
     justify-content: space-around;
 }
+
+.nav-detail-classes{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    list-style-type: none;
+    margin-top: 10px;
+}
+.button-deatil-classe{
+    background-color: #f5f5f5;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    margin-bottom:  20px;
+    cursor: pointer;
+    color: black;
+    font-size: medium;
+
+}
+
+.menu-vertical-espaceprofs{
+    width: 220px;
+    background-color: #f5f5f5;
+    border-right: 1px solid #ddd;
+    padding: "20px";
+  
+
+}
+
+.fixed-navbar {
+    position: fixed;        /* reste collé en haut */
+    /*top: 0;
+    left: 0;*/
+    width: 100%;
+    background-color: #fff; /* ou la couleur que tu veux */
+    z-index: 1000;          /* au-dessus du contenu */
+    border-bottom: 1px solid #ddd;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+
+.upload-form-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+.titre-classe{
+    margin-top: 200px;
+}
+
+.titre{
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+
+
+}
+  
+  
+.titreclasse{
+    display: flex;
+    gap: 100px;
+}
+  

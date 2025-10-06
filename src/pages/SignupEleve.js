@@ -1,15 +1,14 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";//useNavigate est un Hook de React V6. Il sert à changer de page sans charger tout le site(SPA)
-import { signup } from "../services/authService";//La ffonction qui envoit les données vers le backend
+import { signupEleve } from "../services/authServiceEleve";//La ffonction qui envoit les données vers le backend
 
-const Signup = () => {
+const SignupEleve = () => {
 
   //definition initialisation des etats
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [matiere, setMatiere] = useState("");
   const [message, setMessage] = useState("");
 
   //Instance de useNavigate
@@ -19,10 +18,12 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      const res = await signup({ username, email, password, matiere });//res est la reponse avaoyé par axios apres la requete Post
+      const res = await signupEleve({name, email, password });//res est la reponse avaoyé par axios apres la requete Post
   
-
       if (res.data.success) {
+        localStorage.setItem("token", res.data.token);
+        //localStorage.setItem("name", res.data.user.name);
+        localStorage.setItem("email", res.data.eleve.email);
         setMessage("Compte créé avec succès !");
         navigate("/login"); // redirection après inscription
       } else {
@@ -42,8 +43,8 @@ const Signup = () => {
           className="input"
           type="text"
           placeholder="Nom d’utilisateur"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           required
         />
         <input
@@ -62,15 +63,8 @@ const Signup = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-          <input
-          className="input"
-          type="text"
-          placeholder="Matière"
-          value={matiere}
-          onChange={(e) => setMatiere(e.target.value)}
-          required
-        />
-        <button className="button" type="submit"><strong>Create your SVS account</strong></button>
+       
+        <button className="button" type="submit"><strong>Create your SEV space</strong></button>
         <br/>
       </form>
       {message && <p>{message}</p>}
@@ -78,4 +72,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignupEleve;

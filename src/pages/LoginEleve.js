@@ -2,9 +2,9 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../services/authService"; // Assure-toi d'avoir ce service
+import { loginEleve } from "../services/authServiceEleve"; // Assure-toi d'avoir ce service
 
-const Login = () => {
+const LoginEleve = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -16,19 +16,28 @@ const Login = () => {
     e.preventDefault();
   
     try {
-      const res = await login({ email, password });
-      console.log("Réponse backend :", res.data); // 👈 Ajoute ça
+      const res = await loginEleve({ email, password });
+      
       if (res.data.success) {
+
+      
         localStorage.setItem("token", res.data.token);
-        navigate("/espaceprofs");
+        //localStorage.setItem("name", res.data.user.name);  // ⚡ stocker le nom
+        localStorage.setItem("email", res.data.eleve.email);
+        console.log("🔎 Reçu côté frontend:", JSON.stringify(res.data, null, 2));
+        navigate("/espaceprofs"); // redirection après connexion
       } else {
         setMessage(res.data.message || "Email ou mot de passe incorrect");
       }
+     
     } catch (err) {
       console.error("Erreur Axios :", err.response ? err.response.data : err.message);
       setMessage("Erreur lors de la connexion");
     }
+    
   };
+
+  
 
   return (
     <div className="signup">
@@ -60,4 +69,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginEleve;
