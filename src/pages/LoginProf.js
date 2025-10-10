@@ -22,6 +22,7 @@ const LoginProf = () => {
         localStorage.setItem("token", res.data.token);
         //localStorage.setItem("name", res.data.user.name);  // ⚡ stocker le nom
         localStorage.setItem("email", res.data.prof.email);
+        localStorage.setItem("profId", res.data.prof._id);
         console.log("🔎 Reçu côté frontend:", JSON.stringify(res.data, null, 2));
         navigate("/espaceprofs"); // redirection après connexion
       } else {

@@ -6,7 +6,8 @@ import { signupProf } from "../services/authServiceProf";//La ffonction qui envo
 const SignupProf = () => {
 
   //definition initialisation des etats
-  const [name, setName] = useState("");
+  const [nom, setNom] = useState("");
+  const [prenom, setPrenom] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [matiere, setMatiere] = useState("");
@@ -19,7 +20,7 @@ const SignupProf = () => {
     e.preventDefault();
 
     try {
-      const res = await signupProf({name, email, password, matiere });//res est la reponse avaoyé par axios apres la requete Post
+      const res = await signupProf({nom, prenom, email, password, matiere });//res est la reponse avaoyé par axios apres la requete Post
   
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
@@ -44,8 +45,16 @@ const SignupProf = () => {
           className="input"
           type="text"
           placeholder="Nom d’utilisateur"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={nom}
+          onChange={(e) => setNom(e.target.value)}
+          required
+        />
+          <input
+          className="input"
+          type="text"
+          placeholder="Nom d’utilisateur"
+          value={prenom}
+          onChange={(e) => setPrenom(e.target.value)}
           required
         />
         <input

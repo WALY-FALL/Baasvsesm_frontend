@@ -6,7 +6,8 @@ import { signupEleve } from "../services/authServiceEleve";//La ffonction qui en
 const SignupEleve = () => {
 
   //definition initialisation des etats
-  const [name, setName] = useState("");
+  const [nom, setNom] = useState("");
+  const [prenom, setPrenom] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -17,15 +18,18 @@ const SignupEleve = () => {
   const handleSubmit = async (e) => { //e represente l'evenement (event) declanché.
     e.preventDefault();
 
+  // ✅ Déclare et récupère l'ID du professeur connecté
+  //const profId = localStorage.getItem("profId");
+ 
     try {
-      const res = await signupEleve({name, email, password });//res est la reponse avaoyé par axios apres la requete Post
-  
+      const res = await signupEleve({nom, prenom, email, password});//res est la reponse avaoyé par axios apres la requete Post
+     
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
         //localStorage.setItem("name", res.data.user.name);
         localStorage.setItem("email", res.data.eleve.email);
         setMessage("Compte créé avec succès !");
-        navigate("/login"); // redirection après inscription
+        navigate("/login-eleve"); // redirection après inscription
       } else {
         setMessage(res.data.message);
       }
@@ -33,6 +37,7 @@ const SignupEleve = () => {
       console.error("Erreur frontend signup:", err.response ? err.response.data : err.message);
       setMessage("Erreur lors de l'inscription");
     }
+    //console.log("ProfId:", profId);
   };
 
   return (
@@ -42,15 +47,23 @@ const SignupEleve = () => {
         <input
           className="input"
           type="text"
-          placeholder="Nom d’utilisateur"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          placeholder="Nom de l'élève"
+          value={nom}
+          onChange={(e) => setNom(e.target.value)}
+          required
+        />
+          <input
+          className="input"
+          type="text"
+          placeholder="Prénom de l'èléve"
+          value={prenom}
+          onChange={(e) => setPrenom(e.target.value)}
           required
         />
         <input
           className="input"
           type="email"
-          placeholder="Entrer votre Email"
+          placeholder="Email de l'élève"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -58,7 +71,7 @@ const SignupEleve = () => {
         <input
           className="input"
           type="password"
-          placeholder="Entrer votre mot de passe"
+          placeholder="Votre mot de passe"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
