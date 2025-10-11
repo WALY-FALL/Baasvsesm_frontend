@@ -32,7 +32,7 @@ const ListeClasses = ({ profId }) => {
       {classes.map((classe) => (
         <li
           key={classe._id}
-          onClick={() => navigate(`/classe/${classe._id}`)} // ✅ redirection au clic
+          onClick={() => navigate(`/classes/${classe._id}`)} // ✅ redirection au clic
           style={{
             border: "1px solid #ddd",
             padding: "10px",

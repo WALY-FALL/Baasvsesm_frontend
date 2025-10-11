@@ -124,6 +124,20 @@ const Espaceprofs = () => {
           </div>
         )}
 
+            {/* 3️⃣ Menu horizontal pour la classe */}
+            {selectedClasse && (
+          <nav style={{ display: "flex", gap: "10px", marginBottom: "20px", flexWrap: "wrap" }}>
+            <button onClick={handleBackToList}>Retour à mes classes</button>
+            <button>Ajouter un élève</button>
+            <button onClick={() => setShowUploadForm(!showUploadForm)}>
+              {showUploadForm ? "Fermer le formulaire" : "Poster un cours"}
+            </button>
+            <button>Poster des exercices</button>
+            <button>Poster un devoir</button>
+            <button>Poster un Quiz</button>
+          </nav>
+        )}
+
         {/* 🌍 Détail d’une classe sélectionnée */}
         <div>
           {selectedClasse ? (
