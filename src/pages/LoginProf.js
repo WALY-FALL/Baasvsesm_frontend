@@ -1,63 +1,54 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { loginProf } from "../services/authServiceProf"; // Assure-toi d'avoir ce service
 
 const LoginProf = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [message, setMessage] = useState("");
-  const navigate = useNavigate(); // Hook pour redirection
+  const navigate = useNavigate();
 
- 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
     try {
-      const res = await loginProf({ email, password });
-      
+      const res = await axios.post("http://localhost:8989/api/profs/login", formData);
       if (res.data.success) {
-
-      
         localStorage.setItem("token", res.data.token);
-        //localStorage.setItem("name", res.data.user.name);  // ⚡ stocker le nom
-        localStorage.setItem("email", res.data.prof.email);
         localStorage.setItem("profId", res.data.prof._id);
-        console.log("🔎 Reçu côté frontend:", JSON.stringify(res.data, null, 2));
-        navigate("/espaceprofs"); // redirection après connexion
+        localStorage.setItem("email", res.data.prof.email);
+        setMessage("Connexion réussie !");
+        navigate("/espace-prof"); // redirection vers espace prof
       } else {
-        setMessage(res.data.message || "Email ou mot de passe incorrect");
+        setMessage(res.data.message);
       }
-     
     } catch (err) {
-      console.error("Erreur Axios :", err.response ? err.response.data : err.message);
+      console.error("Erreur loginProf:", err.response ? err.response.data : err.message);
       setMessage("Erreur lors de la connexion");
     }
-    
   };
-
-  
-
   return (
     <div className="signup">
       <form className="formulaire" onSubmit={handleSubmit}>
-        <h1>Log In</h1>
+      <h2>Connexion Professeur</h2>
         <input
           className="input"
-          type="text"
-          id="email"
-          placeholder="Entrer votre Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
           required
         />
         <input
           className="input"
           type="password"
-          id="password"
-          placeholder="Entrer votre mot de passe"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          name="password"
+          placeholder="Mot de passe"
+          value={formData.password}
+          onChange={handleChange}
           required
         />
         <button className="button" type="submit" id="button">Se connecter</button>

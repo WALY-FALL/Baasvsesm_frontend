@@ -1,18 +1,17 @@
+// ✅ ListeClasses.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // ✅ ajout
 
-const ListeClasses = ({ profId }) => {
+const ListeClasses = ({ profId, onChoisirClasse }) => {
   const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // ✅ initialisation
 
   useEffect(() => {
     const fetchClasses = async () => {
       try {
-        const res = await axios.get(`http://localhost:8989/api/classes/prof/${profId}`);
-        setClasses(res.data);
+        const res = await axios.get(`http://localhost:8989/api/classes/profs/${profId}`);
+        setClasses(res.data.classes);
       } catch (err) {
         console.error("Erreur lors du chargement des classes:", err);
         setError("Impossible de charger les classes");
@@ -32,7 +31,7 @@ const ListeClasses = ({ profId }) => {
       {classes.map((classe) => (
         <li
           key={classe._id}
-          onClick={() => navigate(`/classes/${classe._id}`)} // ✅ redirection au clic
+          onClick={() => onChoisirClasse(classe._id)} // ✅ on envoie la classe choisie au parent
           style={{
             border: "1px solid #ddd",
             padding: "10px",
@@ -51,4 +50,5 @@ const ListeClasses = ({ profId }) => {
 };
 
 export default ListeClasses;
+
 

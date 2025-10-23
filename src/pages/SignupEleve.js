@@ -1,7 +1,10 @@
 
-import React, { useState } from "react";
+
+/*import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";//useNavigate est un Hook de React V6. Il sert à changer de page sans charger tout le site(SPA)
 import { signupEleve } from "../services/authServiceEleve";//La ffonction qui envoit les données vers le backend
+
+
 
 const SignupEleve = () => {
 
@@ -12,21 +15,25 @@ const SignupEleve = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
+
   //Instance de useNavigate
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => { //e represente l'evenement (event) declanché.
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-  // ✅ Déclare et récupère l'ID du professeur connecté
-  //const profId = localStorage.getItem("profId");
- 
+  
+    const profId = localStorage.getItem("profIdProfQuiInscrit"); // ou celui du prof connecté
+  
+    // Crée un objet avec les données du formulaire
+    const eleveData = { nom, prenom, email, password, profId };
+  
+    console.log("📦 Données envoyées au backend :", eleveData);
+  
     try {
-      const res = await signupEleve({nom, prenom, email, password});//res est la reponse avaoyé par axios apres la requete Post
-     
+      const res = await signupEleve(eleveData); // envoi vers le backend
+  
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
-        //localStorage.setItem("name", res.data.user.name);
         localStorage.setItem("email", res.data.eleve.email);
         setMessage("Compte créé avec succès !");
         navigate("/login-eleve"); // redirection après inscription
@@ -37,9 +44,8 @@ const SignupEleve = () => {
       console.error("Erreur frontend signup:", err.response ? err.response.data : err.message);
       setMessage("Erreur lors de l'inscription");
     }
-    //console.log("ProfId:", profId);
   };
-
+  
   return (
     <div className="signup">
       <form className="formulaire" onSubmit={handleSubmit}>
@@ -85,4 +91,4 @@ const SignupEleve = () => {
   );
 };
 
-export default SignupEleve;
+export default SignupEleve;*/

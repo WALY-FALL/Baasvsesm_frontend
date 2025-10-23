@@ -24,11 +24,13 @@ function ListeEleves({ profId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("📦 Données envoyées :", { ...formData, profId });
+
       await axios.post("http://localhost:8989/api/eleves/add", { ...formData, profId });
       setFormData({ nom: "", prenom: "", email: "" });
       setShowForm(false);
       fetchEleves(); // recharge la liste après ajout
+      console.log("📦 formData envoyé :", formData);
+      console.log("🧠 profId envoyé :", profId);
     } catch (err) {
       console.error("Erreur lors de l'ajout de l'élève :", err);
     }

@@ -4,9 +4,10 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Espaceprofs from "./pages/Espaceprofs";
 import Entete from "./components/Entete";
-import SignupEleve from "./pages/SignupEleve";
+import { SignupEleve, LoginEleve } from "./pages/AuthEleve";
+//import SignupEleve from "./pages/SignupEleve";
 import SignupProf from "./pages/SignupProf";
-import LoginEleve from "./pages/LoginEleve";
+//import LoginEleve from "./pages/LoginEleve";
 import LoginProf from "./pages/LoginProf";
 //import ListeProfs from "./components/ListeProfs";
 import ListeEleves from "./components/ListeEleves";
@@ -45,12 +46,12 @@ function App() {
         <Route path="/login-eleve" element={ <PublicLayout><LoginEleve /> </PublicLayout>} />
         <Route path="/login-prof" element={<PublicLayout><LoginProf /></PublicLayout>} />
         {/*<Route path="/prof" element={<PublicLayout><ListeProfs /></PublicLayout>} />*/}
-        <Route path="/eleve" element={<PublicLayout><EleveDashboard /></PublicLayout>} />
+        <Route path="/espace-eleve" element={<PublicLayout><EleveDashboard /></PublicLayout>} />
         <Route path="/eleves/:profId" element={<PublicLayout><ListeElevesWrapper /></PublicLayout>}/>
 
         {/* Page privée sans Entete ni Navbar */}
         <Route
-         path="/espaceprofs" 
+         path="/espace-prof" 
          element={<PublicLayout><Espaceprofs /></PublicLayout>} />
 
         <Route 

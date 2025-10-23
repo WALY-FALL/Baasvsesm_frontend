@@ -16,6 +16,8 @@ const Espaceprofs = () => {
   const [selectedClasse, setSelectedClasse] = useState(null);
   const [showUploadForm, setShowUploadForm] = useState(false);
 
+  
+
   // Charger les classes du prof
   const fetchClasses = async () => {
     try {
@@ -32,7 +34,15 @@ const Espaceprofs = () => {
   };
 
   // Charger infos du prof depuis localStorage
+
   useEffect(() => {
+    fetchClasses();
+    const storedEmail = localStorage.getItem("email");
+    const storedProfId = localStorage.getItem("profId");
+    if (storedEmail) setEmail(storedEmail);
+    if (storedProfId) setProfId(storedProfId);
+  }, []);
+  /*useEffect(() => {
     fetchClasses();
 
     const storedEmail = localStorage.getItem("email");
@@ -40,6 +50,11 @@ const Espaceprofs = () => {
     if (storedEmail) setEmail(storedEmail);
     if (storedProfId) setProfId(storedProfId);
   }, []);
+
+  useEffect(() => {
+    const storedProfId = localStorage.getItem("profId");
+    if (storedProfId) setProfId(storedProfId);
+  }, []);*/
 
   const handleDelete = async (id) => {
     try {
@@ -128,7 +143,7 @@ const Espaceprofs = () => {
             {selectedClasse && (
           <nav style={{ display: "flex", gap: "10px", marginBottom: "20px", flexWrap: "wrap" }}>
             <button onClick={handleBackToList}>Retour à mes classes</button>
-            <button>Ajouter un élève</button>
+            <button>Liste des élèves</button>
             <button onClick={() => setShowUploadForm(!showUploadForm)}>
               {showUploadForm ? "Fermer le formulaire" : "Poster un cours"}
             </button>
@@ -136,6 +151,15 @@ const Espaceprofs = () => {
             <button>Poster un devoir</button>
             <button>Poster un Quiz</button>
           </nav>
+        )}
+
+
+        {/* Formulaire upload */}
+        {/* Formulaire upload {showUploadForm && selectedClasse && (*/}
+        {showUploadForm && (
+          <div style={{ marginBottom: "20px" }}>
+            <PosterCours onClose={() => setShowUploadForm(false)} />
+          </div>
         )}
 
         {/* 🌍 Détail d’une classe sélectionnée */}
@@ -159,11 +183,11 @@ const Espaceprofs = () => {
               </div>
 
               {/* ✅ Liste des élèves avec profId */}
-              {profId ? (
+             {/*{profId ? (
                 <ListeEleves profId={profId} />
               ) : (
                 <p style={{ color: "red" }}>⚠️ profId introuvable — vérifie le login.</p>
-              )}
+              )}*/}
 
               {/* Formulaire upload */}
               {showUploadForm && selectedClasse && (
@@ -189,7 +213,7 @@ const Espaceprofs = () => {
                         border: "1px solid #ddd",
                         borderRadius: "8px",
                         padding: "16px",
-                        width: "20%",
+                        width: "1 1 200px",
                         height: "150px",
                         boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
                         backgroundColor: "#fff",
