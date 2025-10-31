@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Classe from "./FormulaireClasse";
+import FormulaireClasse from "./FormulaireClasse";
 import axios from "axios";
 import PosterCours from "../components/PosterCours";
-import ListeEleves from "../components/ListeEleves";
+import ListeCours from "../components/ListeCours";
+//import ListeEleves from "../components/ListeEleves";
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 const API_URL_CLASSE = process.env.REACT_APP_API_URL_CLASSE || "http://localhost:5000/api";
@@ -130,7 +131,7 @@ const Espaceprofs = () => {
         {/* Formulaire création classe */}
         {showForm && (
           <div className="mt-4 p-4 border rounded shadow" style={{ marginBottom: "20px" }}>
-            <Classe
+            <FormulaireClasse
               onClassCreated={() => {
                 setShowForm(false);
                 fetchClasses();
@@ -142,11 +143,15 @@ const Espaceprofs = () => {
             {/* 3️⃣ Menu horizontal pour la classe */}
             {selectedClasse && (
           <nav style={{ display: "flex", gap: "10px", marginBottom: "20px", flexWrap: "wrap" }}>
+
             <button onClick={handleBackToList}>Retour à mes classes</button>
+
             <button>Liste des élèves</button>
+
             <button onClick={() => setShowUploadForm(!showUploadForm)}>
               {showUploadForm ? "Fermer le formulaire" : "Poster un cours"}
             </button>
+
             <button>Poster des exercices</button>
             <button>Poster un devoir</button>
             <button>Poster un Quiz</button>
@@ -156,30 +161,31 @@ const Espaceprofs = () => {
 
         {/* Formulaire upload */}
         {/* Formulaire upload {showUploadForm && selectedClasse && (*/}
-        {showUploadForm && (
+        {/*{showUploadForm && (
           <div style={{ marginBottom: "20px" }}>
             <PosterCours onClose={() => setShowUploadForm(false)} />
           </div>
-        )}
+        )}*/}
 
         {/* 🌍 Détail d’une classe sélectionnée */}
         <div>
           {selectedClasse ? (
             <div>
-              <div className="titreclasse">
-                <h2>📘 Classe</h2>
-                <div className="titre">
-                  <h2>
-                    <strong>{selectedClasse.niveau}</strong>
-                  </h2>
-                  <h2>
-                    <strong>{selectedClasse.serie}</strong>
-                  </h2>
-                  <h2>
-                    <strong>Créée le :</strong>{" "}
-                    {new Date(selectedClasse.createdAt).toLocaleString()}
-                  </h2>
+              <div className="conteneur-classe-cours">
+                <div className="titre-classe">
+                  <h2>📘 Classe</h2>
+                  <div className="titre">
+                    <h2><strong>{selectedClasse.niveau}</strong> </h2>
+                    <h2> <strong>{selectedClasse.serie}</strong> </h2>
+                    <h2>  <strong>Créée le :</strong>{" "} {new Date(selectedClasse.createdAt).toLocaleString()}</h2>
+                  </div>
                 </div>
+
+                <div>
+                 {/* Liste des cours */}
+                <ListeCours classeId={selectedClasse._id} />
+                </div>
+
               </div>
 
               {/* ✅ Liste des élèves avec profId */}
@@ -190,9 +196,11 @@ const Espaceprofs = () => {
               )}*/}
 
               {/* Formulaire upload */}
-              {showUploadForm && selectedClasse && (
+             {showUploadForm && selectedClasse && (
                 <div style={{ marginBottom: "20px" }}>
-                  <PosterCours onClose={() => setShowUploadForm(false)} />
+                  <PosterCours onClose={() => setShowUploadForm(false)} 
+                  selectedClasseId={selectedClasse._id}
+                  />
                 </div>
               )}
             </div>

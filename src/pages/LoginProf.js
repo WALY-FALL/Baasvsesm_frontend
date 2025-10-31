@@ -17,8 +17,10 @@ const LoginProf = () => {
       const res = await axios.post("http://localhost:8989/api/profs/login", formData);
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
-        localStorage.setItem("profId", res.data.prof._id);
+        localStorage.setItem("profId", res.data.prof.id);
+        //console.log("✅ ProfId stocké dans localStorage :", localStorage.getItem("profId"));
         localStorage.setItem("email", res.data.prof.email);
+        console.log("📝 Résultat login détaillé:", JSON.stringify(res.data, null, 2));
         setMessage("Connexion réussie !");
         navigate("/espace-prof"); // redirection vers espace prof
       } else {
@@ -28,6 +30,7 @@ const LoginProf = () => {
       console.error("Erreur loginProf:", err.response ? err.response.data : err.message);
       setMessage("Erreur lors de la connexion");
     }
+    
   };
   return (
     <div className="signup">

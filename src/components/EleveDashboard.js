@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ListeProfs from "./ListeProfs";
 import ListeClasses from "./ListeClasses";
+import ListeCoursEleve from "./ListeCoursEleve";
 //import ListeEleves from "./ListeEleves";
 
 const EleveDashboard = () => {
@@ -74,7 +75,46 @@ useEffect(() => {
   };
 
   // ✅ Quand l'élève choisit une classe
-const handleChoisirClasse = async (classeId) => {
+
+  // ✅ Quand l'élève choisit une classe
+const handleChoisirClasse = async (classeIdChoisie) => {
+  const eleveId = localStorage.getItem("eleveId");
+  const profId = profSelectionne._id;
+
+  console.log("🔍 Données envoyées à l'API :", {
+    eleveId,
+    profId,
+    classeId: classeIdChoisie,
+  });
+
+  try {
+    const res = await axios.put("http://localhost:8989/api/eleves/choisir", {
+      eleveId,
+      profId,
+      classeId: classeIdChoisie,
+    });
+
+    if (res.data.success) {
+      alert("Classe choisie avec succès !");
+
+      // ✅ Enregistre la classe dans le localStorage
+      localStorage.setItem("classeId", classeIdChoisie);
+
+      // ✅ Met à jour le state local (pour affichage direct)
+      setClasseId(classeIdChoisie);
+      setHasChosen(true);
+    } else {
+      alert(res.data.message);
+    }
+
+    console.log("✅ Lien créé :", res.data);
+  } catch (err) {
+    console.error("Erreur lors du choix de la classe :", err);
+    alert("Erreur serveur lors du choix de la classe");
+  }
+};
+
+/*const handleChoisirClasse = async (classeIdChoisie) => {
   //const eleveId = localStorage.getItem("eleveId"); // tu peux le stocker après login
   const profId = profSelectionne._id;
   //console.log("🔍 Données envoyées :", { eleveId, profId, classeId });
@@ -90,11 +130,14 @@ const handleChoisirClasse = async (classeId) => {
       //profId: profSelectionne._id,
       //classeId: classe._id
       profId,
-      classeId
+      classeId: classeIdChoisie,
     });
 
     if (res.data.success) {
       alert("Classe choisie avec succès !");
+       // ⚡ Mettre à jour l’état local pour afficher les cours
+       setClasseId(classeIdChoisie);
+       setHasChosen(true);
     } else {
       alert(res.data.message);
     }
@@ -103,7 +146,7 @@ const handleChoisirClasse = async (classeId) => {
     console.error("Erreur lors du choix de la classe :", err);
     alert("Erreur serveur lors du choix de la classe");
   }
-};
+};*/
 
 
   return (
@@ -148,8 +191,16 @@ const handleChoisirClasse = async (classeId) => {
   <div>
    <h2>Élèves de {profSelectionne.nom} {profSelectionne.prenom}</h2>
     <ListeEleves profId={profSelectionne._id} /> */}{/* 👈 ICI on envoie le profId */}
-{/* </div>
-)}*/}  
+ {/*</div>
+)} */} 
+          {/* ✅ Affichage des cours uniquement si une classe est choisie */}
+    {hasChosen && classeId && (
+      <div style={{ marginTop: "20px" }}>
+        <h3>📚 Cours de la classe sélectionnée</h3>
+        <ListeCoursEleve classeId={classeId} />
+      </div>
+    )}
+
         </div>
       )}
     </div>

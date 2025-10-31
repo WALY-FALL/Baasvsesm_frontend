@@ -155,7 +155,7 @@ body{
     justify-content: center;
   }
 .titre-classe{
-    margin-top: 200px;
+    margin-top: 10px;
 }
 
 .titre{
@@ -167,8 +167,17 @@ body{
 }
   
   
-.titreclasse{
+.conteneur-classe-cours{
     display: flex;
-    gap: 100px;
+    flex-direction: column;
+  
 }
+
+.titre-classe{
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    
+}
+
   

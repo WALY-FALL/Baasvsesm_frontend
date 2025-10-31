@@ -25,7 +25,7 @@ const SignupProf = () => {
       if (res.data.success) {
         // Stocker token et info dans localStorage
         localStorage.setItem("token", res.data.token);
-        localStorage.setItem("profId", res.data.prof._id);
+        localStorage.setItem("profId", res.data.prof.id);
         localStorage.setItem("email", res.data.prof.email);
         setMessage("Compte créé avec succès !");
         navigate("/login-prof"); // redirection vers login si souhaité
