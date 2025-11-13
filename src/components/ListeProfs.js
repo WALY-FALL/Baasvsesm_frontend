@@ -39,6 +39,7 @@ const ListeProfs = ({ onSelectProf }) => {
               padding: "10px",
               marginBottom: "5px",
               backgroundColor: "#e8ffe8",
+              listStyleType: "none",
             }}
           >
             {prof.prenom} {prof.nom} ({prof.matiere})

@@ -3,6 +3,7 @@ import FormulaireClasse from "./FormulaireClasse";
 import axios from "axios";
 import PosterCours from "../components/PosterCours";
 import ListeCours from "../components/ListeCours";
+import DemandesAccesProf from "../components/DemandesAccesProf";
 //import ListeEleves from "../components/ListeEleves";
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
@@ -142,21 +143,21 @@ const Espaceprofs = () => {
 
             {/* 3️⃣ Menu horizontal pour la classe */}
             {selectedClasse && (
-          <nav style={{ display: "flex", gap: "10px", marginBottom: "20px", flexWrap: "wrap" }}>
+              <nav style={{ display: "flex", gap: "10px", marginBottom: "20px", flexWrap: "wrap" }}>
 
-            <button onClick={handleBackToList}>Retour à mes classes</button>
+                <button onClick={handleBackToList}>Retour à mes classes</button>
 
-            <button>Liste des élèves</button>
+                <button>Liste des élèves</button>
 
-            <button onClick={() => setShowUploadForm(!showUploadForm)}>
-              {showUploadForm ? "Fermer le formulaire" : "Poster un cours"}
-            </button>
+                <button onClick={() => setShowUploadForm(!showUploadForm)}>
+                  {showUploadForm ? "Fermer le formulaire" : "Poster un cours"}
+                </button>
 
-            <button>Poster des exercices</button>
-            <button>Poster un devoir</button>
-            <button>Poster un Quiz</button>
-          </nav>
-        )}
+                <button>Poster des exercices</button>
+                <button>Poster un devoir</button>
+                <button>Poster un Quiz</button>
+              </nav>
+            )}
 
 
         {/* Formulaire upload */}
@@ -179,6 +180,11 @@ const Espaceprofs = () => {
                     <h2> <strong>{selectedClasse.serie}</strong> </h2>
                     <h2>  <strong>Créée le :</strong>{" "} {new Date(selectedClasse.createdAt).toLocaleString()}</h2>
                   </div>
+                </div>
+
+                <div>
+                  {/* ...autres composants */}
+                  <DemandesAccesProf />
                 </div>
 
                 <div>

@@ -20,7 +20,7 @@ const Navbar = () => {
           onMouseEnter={() => setShowSignupMenu(true)}
           onMouseLeave={() => setShowSignupMenu(false)}
         >
-          <span className="li-link dropdown-title">Sign up ▾</span>
+          <span className="li-link dropdown-title">S'inscrire ▾</span>
           {showSignupMenu && (
             <ul className="dropdown-menu">
               <li><Link to="/signup-eleve" className="dropdown-item">Élève</Link></li>
@@ -35,7 +35,7 @@ const Navbar = () => {
           onMouseEnter={() => setShowLoginMenu(true)}
           onMouseLeave={() => setShowLoginMenu(false)}
         >
-          <span className="li-link dropdown-title">Log in ▾</span>
+          <span className="li-link dropdown-title">Se connecter ▾</span>
           {showLoginMenu && (
             <ul className="dropdown-menu">
               <li><Link to="/login-eleve" className="dropdown-item">Élève</Link></li>

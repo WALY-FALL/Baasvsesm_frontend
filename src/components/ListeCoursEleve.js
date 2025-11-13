@@ -7,11 +7,16 @@ const ListeCoursEleve = () => {
   const [coursListe, setCoursListe] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  
+  
+ 
 
   // Récupération du classeId depuis le localStorage
-  const classeId = localStorage.getItem("classeId");
+  //const classeId = localStorage.getItem("classeId");
+  const profId = localStorage.getItem("profId");
+  const classeId = profId ? localStorage.getItem(`classe_${profId}`) : null;
 
-  useEffect(() => {
+  /*useEffect(() => {
     const fetchCours = async () => {
       if (!classeId) {
         setError("Classe non sélectionnée.");
@@ -35,7 +40,42 @@ const ListeCoursEleve = () => {
     };
 
     fetchCours();
-  }, [classeId]);
+  }, [classeId]);*/
+
+  useEffect(() => {
+    const fetchCours = async () => {
+      if (!profId) {
+        setError("Aucun professeur sélectionné.");
+        setLoading(false);
+        return;
+      }
+  
+      const storedClasse = localStorage.getItem(`classe_${profId}`);
+  
+      if (!storedClasse) {
+        setError("⏳ En attente de validation du professeur pour cette classe.");
+        setLoading(false);
+        return;
+      }
+  
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get(`${API_URL}/cours/classe/${storedClasse}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        setCoursListe(res.data);
+      } catch (err) {
+        console.error("Erreur récupération cours élève :", err);
+        setError("Impossible de récupérer les cours.");
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchCours();
+  }, [profId]);
+  
 
   if (loading) return <p>Chargement des cours...</p>;
   if (error) return <p>{error}</p>;
@@ -43,11 +83,11 @@ const ListeCoursEleve = () => {
 
   return (
     <div>
-      <h3>📚 Cours de la classe</h3>
+      <h3>📚 Cours de la classe </h3>
       {coursListe.map((c) => (
         <div
           key={c._id}
-          style={{ marginBottom: "15px", padding: "10px", border: "1px solid #ddd" }}
+          style={{ marginBottom: "15px", padding: "10px", border: "1px solid #ddd", width:"160px" }}
         >
           <h4>{c.titre}</h4>
           <p>{c.contenu}</p>

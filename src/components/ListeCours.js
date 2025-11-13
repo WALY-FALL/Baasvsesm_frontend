@@ -40,7 +40,7 @@ const ListeCours = ({ classeId }) => {
 
   return (
     <div>
-      <h3>📚 Cours de la classe</h3>
+      <h3>📚 Cours de la classe </h3>
       <div className="liste-cours-prof">
       {coursListe.map((c) => (
         <div

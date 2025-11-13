@@ -45,6 +45,20 @@ useEffect(() => {
   }
 }, []);
 
+/*useEffect(() => {
+  const eleveId = localStorage.getItem("eleveId");
+  if (!eleveId) return;
+
+  axios.get(`http://localhost:8989/api/eleves/${eleveId}`)
+    .then(res => {
+      if (res.data.classeId) {
+        localStorage.setItem("classeId", res.data.classeId);
+      }
+    })
+    .catch(err => console.log(err));
+}, []);*/
+
+
 useEffect(() => {
   const storedEleveId = localStorage.getItem("eleveId");
   const storedProfId = localStorage.getItem("profId");
@@ -67,87 +81,93 @@ useEffect(() => {
   // ✅ Quand on clique sur un prof
   const handleSelectProf = (prof) => {
     setProfSelectionne(prof); // sélectionne le prof
+      // 🆕 On mémorise le prof sélectionné
+  localStorage.setItem("profId", prof._id);
   };
 
   // ✅ Retour à la liste des profs
   const handleBackToProfs = () => {
     setProfSelectionne(null); // désélectionne le prof
+    localStorage.removeItem("profId"); // facultatif mais propre
   };
 
-  // ✅ Quand l'élève choisit une classe
 
   // ✅ Quand l'élève choisit une classe
-const handleChoisirClasse = async (classeIdChoisie) => {
-  const eleveId = localStorage.getItem("eleveId");
-  const profId = profSelectionne._id;
-
-  console.log("🔍 Données envoyées à l'API :", {
-    eleveId,
-    profId,
-    classeId: classeIdChoisie,
-  });
-
-  try {
-    const res = await axios.put("http://localhost:8989/api/eleves/choisir", {
-      eleveId,
-      profId,
-      classeId: classeIdChoisie,
-    });
-
-    if (res.data.success) {
-      alert("Classe choisie avec succès !");
-
-      // ✅ Enregistre la classe dans le localStorage
-      localStorage.setItem("classeId", classeIdChoisie);
-
-      // ✅ Met à jour le state local (pour affichage direct)
-      setClasseId(classeIdChoisie);
-      setHasChosen(true);
-    } else {
-      alert(res.data.message);
+  const handleChoisirClasse = async (classeIdChoisie) => {
+    const eleveId = localStorage.getItem("eleveId");
+    const profId = localStorage.getItem("profId"); // <--- On récupère le bon prof
+    //const profId = profSelectionne?._id;
+  
+    if (!eleveId || !profId || !classeIdChoisie) {
+      console.log("❌ Données manquantes :", { eleveId, profId, classeIdChoisie });
+      alert("Erreur : informations manquantes. Reconnecte-toi.");
+      return;
     }
+  
+    try {
+      // ✅ 1) Vérifier si l'accès a déjà été accepté
+      const verif = await axios.get(`http://localhost:8989/api/demandes/eleve/${eleveId}`);
+      //const verif = await axios.get(`http://localhost:8989/api/demandes/eleve/${eleveId}/prof/${profId}`);
 
-    console.log("✅ Lien créé :", res.data);
-  } catch (err) {
-    console.error("Erreur lors du choix de la classe :", err);
-    alert("Erreur serveur lors du choix de la classe");
-  }
-};
-
-/*const handleChoisirClasse = async (classeIdChoisie) => {
-  //const eleveId = localStorage.getItem("eleveId"); // tu peux le stocker après login
-  const profId = profSelectionne._id;
-  //console.log("🔍 Données envoyées :", { eleveId, profId, classeId });
- // console.log("🔍 eleveId:", eleveId); // doit afficher un ID valide
- console.log("🔍 Données envoyées à l'API :", {
-  eleveId,
-  profId,
-  classeId,
-});
-  try {
-    const res = await axios.put("http://localhost:8989/api/eleves/choisir", {
-      eleveId,
-      //profId: profSelectionne._id,
-      //classeId: classe._id
-      profId,
-      classeId: classeIdChoisie,
-    });
-
-    if (res.data.success) {
-      alert("Classe choisie avec succès !");
-       // ⚡ Mettre à jour l’état local pour afficher les cours
-       setClasseId(classeIdChoisie);
-       setHasChosen(true);
-    } else {
-      alert(res.data.message);
+      if (verif.data?.statut === "accepte") {
+        // ✅ L'élève est déjà autorisé → On active l'accès directement
+        localStorage.setItem("classeId", verif.data.classeId);
+        setClasseId(verif.data.classeId);
+        setHasChosen(true);
+        return;
+      }
+  
+      // ❗ Sinon → envoyer une nouvelle demande d'accès
+      const res = await axios.post("http://localhost:8989/api/demandes/demande", {
+        eleveId,
+        profId,
+        classeId: classeIdChoisie,
+      });
+  
+      if (res.data.success) {
+        localStorage.setItem(`classe_${profId}`, classeIdChoisie);
+        alert("✅ Demande envoyée. En attente de validation du professeur.");
+      } else {
+        alert(res.data.message || "Erreur lors de l’envoi de la demande.");
+      }
+  
+    } catch (err) {
+      console.error("Erreur lors de la demande d'accès :", err);
+      alert("Erreur serveur lors de la demande d'accès.");
     }
-    console.log("✅ Lien créé :", res.data);
-  } catch (err) {
-    console.error("Erreur lors du choix de la classe :", err);
-    alert("Erreur serveur lors du choix de la classe");
-  }
-};*/
+  };
+  
+  /*const handleChoisirClasse = async (classeIdChoisie) => {
+    const eleveId = localStorage.getItem("eleveId");
+    const profId = profSelectionne._id;
 
+    if (!eleveId || !profId || !classeIdChoisie) {
+      console.log("❌ Données manquantes :", { eleveId, profId, classeIdChoisie });
+      alert("Erreur : informations manquantes. Reconnecte-toi.");
+      return;
+    }
+  
+    try {
+      
+      // ✅ On ne lie pas encore l'élève à la classe
+      // On envoie simplement une demande d'accès
+      const res = await axios.post("http://localhost:8989/api/demandes/demande", {
+        eleveId,
+        profId,
+        classeId: classeIdChoisie,
+      });
+  
+      if (res.data.success) {
+        alert("✅ Demande d'accès envoyée au professeur. En attente de validation.");
+      } else {
+        alert(res.data.message || "Erreur lors de l’envoi de la demande.");
+      }
+    } catch (err) {
+      console.error("Erreur lors de la demande d'accès :", err);
+      alert("Erreur serveur lors de la demande d'accès.");
+    }
+  };*/
+  
 
   return (
     <div style={{ padding: "20px", maxWidth: "800px", margin: "auto" }}>
@@ -183,9 +203,9 @@ const handleChoisirClasse = async (classeIdChoisie) => {
           </h2>
           {/*<ListeClasses profId={profSelectionne._id} />*/}
           <ListeClasses 
-  profId={profSelectionne._id}
-  onChoisirClasse={handleChoisirClasse}  // ✅ ajout important
-/>
+            profId={profSelectionne._id}
+            onChoisirClasse={handleChoisirClasse}  // ✅ ajout important
+          />
 
           {/*{profSelectionne && (
   <div>
@@ -196,7 +216,7 @@ const handleChoisirClasse = async (classeIdChoisie) => {
           {/* ✅ Affichage des cours uniquement si une classe est choisie */}
     {hasChosen && classeId && (
       <div style={{ marginTop: "20px" }}>
-        <h3>📚 Cours de la classe sélectionnée</h3>
+        {/*<h3>📚 Cours de la classe sélectionnée</h3>*/}
         <ListeCoursEleve classeId={classeId} />
       </div>
     )}

@@ -39,6 +39,7 @@ const ListeClasses = ({ profId, onChoisirClasse }) => {
             cursor: "pointer",
             backgroundColor: "#f9f9f9",
             borderRadius: "5px",
+            listStyleType: "none",
           }}
         >
           <strong>{classe.niveau} - {classe.serie}</strong> <br />
