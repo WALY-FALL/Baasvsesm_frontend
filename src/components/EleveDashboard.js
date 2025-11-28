@@ -45,18 +45,6 @@ useEffect(() => {
   }
 }, []);
 
-/*useEffect(() => {
-  const eleveId = localStorage.getItem("eleveId");
-  if (!eleveId) return;
-
-  axios.get(`http://localhost:8989/api/eleves/${eleveId}`)
-    .then(res => {
-      if (res.data.classeId) {
-        localStorage.setItem("classeId", res.data.classeId);
-      }
-    })
-    .catch(err => console.log(err));
-}, []);*/
 
 
 useEffect(() => {
@@ -94,30 +82,28 @@ useEffect(() => {
 
   // ✅ Quand l'élève choisit une classe
   const handleChoisirClasse = async (classeIdChoisie) => {
-    const eleveId = localStorage.getItem("eleveId");
-    const profId = localStorage.getItem("profId"); // <--- On récupère le bon prof
-    //const profId = profSelectionne?._id;
-  
-    if (!eleveId || !profId || !classeIdChoisie) {
-      console.log("❌ Données manquantes :", { eleveId, profId, classeIdChoisie });
-      alert("Erreur : informations manquantes. Reconnecte-toi.");
-      return;
-    }
-  
     try {
-      // ✅ 1) Vérifier si l'accès a déjà été accepté
+      const eleveId = localStorage.getItem("eleveId");
+      const profId = profSelectionne?._id || localStorage.getItem("profId");
+  
+      if (!eleveId || !profId || !classeIdChoisie) {
+        console.warn("❌ Données manquantes :", { eleveId, profId, classeIdChoisie });
+        alert("Erreur : informations manquantes. Reconnecte-toi.");
+        return;
+      }
+  
+      // 1️⃣ Vérifier si l'élève a déjà accès à cette classe pour ce prof
       const verif = await axios.get(`http://localhost:8989/api/demandes/eleve/${eleveId}`);
-      //const verif = await axios.get(`http://localhost:8989/api/demandes/eleve/${eleveId}/prof/${profId}`);
-
-      if (verif.data?.statut === "accepte") {
-        // ✅ L'élève est déjà autorisé → On active l'accès directement
-        localStorage.setItem("classeId", verif.data.classeId);
-        setClasseId(verif.data.classeId);
+  
+      if (verif.data.statut === "accepte" && verif.data.classeId === classeIdChoisie) {
+        // Accès déjà accepté → on active la classe directement
+        localStorage.setItem("classeId", classeIdChoisie);
+        setClasseId(classeIdChoisie);
         setHasChosen(true);
         return;
       }
   
-      // ❗ Sinon → envoyer une nouvelle demande d'accès
+      // 2️⃣ Sinon → envoyer une nouvelle demande
       const res = await axios.post("http://localhost:8989/api/demandes/demande", {
         eleveId,
         profId,
@@ -125,48 +111,23 @@ useEffect(() => {
       });
   
       if (res.data.success) {
+        // Sauvegarder la classe choisie pour ce prof
         localStorage.setItem(`classe_${profId}`, classeIdChoisie);
+        setClasseId(classeIdChoisie);
+        setHasChosen(false); // en attente d'acceptation
         alert("✅ Demande envoyée. En attente de validation du professeur.");
       } else {
         alert(res.data.message || "Erreur lors de l’envoi de la demande.");
       }
-  
     } catch (err) {
       console.error("Erreur lors de la demande d'accès :", err);
       alert("Erreur serveur lors de la demande d'accès.");
     }
   };
   
-  /*const handleChoisirClasse = async (classeIdChoisie) => {
-    const eleveId = localStorage.getItem("eleveId");
-    const profId = profSelectionne._id;
 
-    if (!eleveId || !profId || !classeIdChoisie) {
-      console.log("❌ Données manquantes :", { eleveId, profId, classeIdChoisie });
-      alert("Erreur : informations manquantes. Reconnecte-toi.");
-      return;
-    }
-  
-    try {
-      
-      // ✅ On ne lie pas encore l'élève à la classe
-      // On envoie simplement une demande d'accès
-      const res = await axios.post("http://localhost:8989/api/demandes/demande", {
-        eleveId,
-        profId,
-        classeId: classeIdChoisie,
-      });
-  
-      if (res.data.success) {
-        alert("✅ Demande d'accès envoyée au professeur. En attente de validation.");
-      } else {
-        alert(res.data.message || "Erreur lors de l’envoi de la demande.");
-      }
-    } catch (err) {
-      console.error("Erreur lors de la demande d'accès :", err);
-      alert("Erreur serveur lors de la demande d'accès.");
-    }
-  };*/
+
+
   
 
   return (

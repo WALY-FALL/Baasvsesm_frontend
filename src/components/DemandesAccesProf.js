@@ -1,7 +1,7 @@
-/*import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8989/api";
+/*const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8989/api";
 
 const DemandesAccesProf = () => {
   const [demandes, setDemandes] = useState([]);
@@ -73,9 +73,42 @@ const DemandesAccesProf = () => {
             Élève : <strong>{demande.eleveId?.prenom} {demande.eleveId?.nom}</strong> {" "} souhaite accéder à la  {" "} 
             classe <strong>{demande.classeId?.niveau} {demande.classeId?.serie}</strong>
           </p>
-          <p>Statut : {demande.statut}</p>
+          <p>Statut : {demande.statut}</p>*/
 
-          {demande.statut === "en attente" && (
+           {/* ✅ Afficher les boutons si la demande est en attente */}
+         {/*{demande.statut === "en_attente" && (
+            <div style={{ marginTop: "10px" }}>
+              <button
+                onClick={() => repondreDemande(demande._id, "accepte")}
+                style={{
+                  marginRight: "10px",
+                  backgroundColor: "green",
+                  color: "white",
+                  padding: "5px 10px",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                ✅ Accepter
+              </button>
+              <button
+                onClick={() => repondreDemande(demande._id, "refuse")}
+                style={{
+                  backgroundColor: "red",
+                  color: "white",
+                  padding: "5px 10px",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                ❌ Refuser
+              </button>
+            </div>
+          )}
+
+         {demande.statut === "en attente" && (
             <div>
               <button
                  onClick={() => repondreDemande(demande._id, "accepte")}
@@ -113,10 +146,10 @@ const DemandesAccesProf = () => {
   );
 };
 
-export default DemandesAccesProf;*/
+export default DemandesAccesProf;*/}
 
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+/*import React, { useEffect, useState } from "react";
+import axios from "axios";*/
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8989/api";
 
@@ -172,7 +205,7 @@ const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8989/api";
   if (error) return <p style={{ color: "red" }}>{error}</p>;
   if (!demandes.length) return <p>Aucune demande pour le moment.</p>;
 
-  return (
+ return (
     <div style={{ padding: "20px" }}>
       <h2>📥 Demandes d’accès aux classes</h2>
 
@@ -200,7 +233,7 @@ const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8989/api";
           <p>Statut : {demande.statut}</p>
 
           {/* ✅ Afficher les boutons si la demande est en attente */}
-          {demande.statut === "en_attente" && (
+         {demande.statut === "en_attente" && (
             <div style={{ marginTop: "10px" }}>
               <button
                 onClick={() => repondreDemande(demande._id, "accepte")}
