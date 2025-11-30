@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../style/signup.css"; // même CSS que SignupProf
+
+/*import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const LoginProf = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -62,4 +67,74 @@ const LoginProf = () => {
   );
 };
 
+export default LoginProf;*/
+
+
+const LoginProf = () => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await axios.post("http://localhost:8989/api/profs/login", formData);
+
+      if (res.data.success) {
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("profId", res.data.prof.id);
+        localStorage.setItem("email", res.data.prof.email);
+
+        setMessage("Connexion réussie !");
+        navigate("/espace-prof");
+      } else {
+        setMessage(res.data.message);
+      }
+    } catch (err) {
+      console.error("Erreur loginProf:", err.response ? err.response.data : err.message);
+      setMessage("Erreur lors de la connexion");
+    }
+  };
+
+  return (
+    <div className="signup-container">
+      <form className="signup-form" onSubmit={handleSubmit}>
+        <h2 className="signup-title">Connexion Professeur</h2>
+
+        <input
+          className="signup-input"
+          type="email"
+          name="email"
+          placeholder="Email professionnel"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          className="signup-input"
+          type="password"
+          name="password"
+          placeholder="Mot de passe"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
+
+        <button className="signup-btn" type="submit">
+          Se connecter
+        </button>
+      </form>
+
+      {message && <p className="signup-message">{message}</p>}
+    </div>
+  );
+};
+
 export default LoginProf;
+
