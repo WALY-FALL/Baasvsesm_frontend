@@ -103,6 +103,8 @@ const SignupProf = () => {
 
 export default SignupProf;*/
 
+const API_URL = process.env.REACT_APP_API_URL_USERS;
+
 
 const SignupProf = () => {
   const [formData, setFormData] = useState({
@@ -122,8 +124,8 @@ const SignupProf = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-     const res = await axios.post("http://localhost:8989/api/profs/signup", formData);
-     //const res = await api.post("/profs/signup", formData);
+     //const res = await axios.post("http://localhost:8989/api/profs/signup", formData);
+     const res = await axios.post(`${API_URL}/profs/signup`, formData);
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("profId", res.data.prof.id);
