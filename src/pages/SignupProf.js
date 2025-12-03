@@ -103,7 +103,7 @@ const SignupProf = () => {
 
 export default SignupProf;*/
 
-const API_URL = process.env.REACT_APP_API_URL_USERS;
+const API_URL = process.env.REACT_APP_API_URL;
 
 
 const SignupProf = () => {
