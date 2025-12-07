@@ -69,6 +69,7 @@ const LoginProf = () => {
 
 export default LoginProf;*/
 
+const API_URL = process.env.REACT_APP_API_URL;
 
 const LoginProf = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -83,7 +84,8 @@ const LoginProf = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:8989/api/profs/login", formData);
+      //const res = await axios.post("http://localhost:8989/api/profs/login", formData);
+      const res = await axios.post(`${API_URL}/profs/login`, formData);
 
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
