@@ -11,6 +11,7 @@ import axios from "axios";
   //const [classeId, setSelectClasseId] = useState("");
 
   const token = localStorage.getItem("token");
+  const API_URL = process.env.REACT_APP_API_URL;
 
  /* useEffect(() => {
     // Récupérer le profId depuis le localStorage au chargement
@@ -62,9 +63,8 @@ import axios from "axios";
 
     try {
       setUploading(true);
-      const res = await axios.post(
-        "http://localhost:8989/api/cours",
-        formData,
+      //const res = await axios.post("http://localhost:8989/api/cours",formData,
+      const res = await axios.post(`${API_URL}/cours`,formData,
         {
           headers: { 
             "Content-Type": "multipart/form-data",
@@ -79,7 +79,8 @@ import axios from "axios";
       setContenu("");
       // Optionnel : afficher un lien vers le fichier
       if (res.data.fichiers && res.data.fichiers.length > 0) {
-        const fichierUrl = `http://localhost:8989/uploads/${res.data.fichiers[0]}`;
+        //const fichierUrl = `http://localhost:8989/uploads/${res.data.fichiers[0]}`;
+        const fichierUrl = `${API_URL}/uploads/${res.data.fichiers[0]}`;
         setMessage(
           `✅ Cours uploadé ! Fichier disponible ici : ` +
           `<a href="${fichierUrl}" target="_blank" rel="noopener noreferrer">${res.data.fichiers[0]}</a>`
