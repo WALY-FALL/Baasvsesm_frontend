@@ -57,7 +57,8 @@ const ListeCours = ({ classeId }) => {
           <p>{c.contenu}</p>
           {c.fichiers && c.fichiers.length > 0 && (
             <a
-              href={`http://localhost:8989/${c.fichiers[0].url}`}
+              //href={`http://localhost:8989/${c.fichiers[0].url}`}
+              href={`${API_URL}/${c.fichiers[0].url}`}
               target="_blank"
               rel="noopener noreferrer"
             >
